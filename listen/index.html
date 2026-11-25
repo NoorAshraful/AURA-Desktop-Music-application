@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="referrer" content="no-referrer">
+  <meta name="theme-color" content="#151719">
+  <meta property="og:title" content="Listen in Aura">
+  <meta property="og:description" content="Open the shared track in the Aura desktop music player.">
+  <title>Listen in Aura</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      font-family: "Segoe UI", system-ui, sans-serif;
+      color: #f2f3f5;
+      background: #151719;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      min-height: 100vh;
+      min-height: 100dvh;
+      margin: 0;
+      padding: 24px;
+      display: grid;
+      place-items: center;
+      background: radial-gradient(ellipse at 50% 15%, #20352e, transparent 60%);
+    }
+
+    main {
+      width: min(100%, 460px);
+      padding: clamp(24px, 6vw, 36px);
+      border: 1px solid #34383c;
+      border-radius: 16px;
+      background: #1e2124;
+      box-shadow: 0 18px 56px #0005;
+    }
+
+    .mark {
+      display: grid;
+      place-items: center;
+      width: 48px;
+      height: 48px;
+      border-radius: 13px;
+      background: linear-gradient(135deg, #d7c9ff, #a997eb);
+      color: #211944;
+      font-size: 25px;
+      font-weight: 750;
+    }
+
+    h1 {
+      margin: 17px 0 8px;
+      font-size: clamp(26px, 6vw, 32px);
+      line-height: 1.2;
+    }
+
+    p { margin: 0; color: #b9bec5; line-height: 1.55; }
+
+    .actions { display: grid; gap: 10px; margin-top: 24px; }
+
+    .button {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 46px;
+      padding: 10px 14px;
+      border: 1px solid #495158;
+      border-radius: 9px;
+      color: #f2f3f5;
+      font-weight: 600;
+      text-align: center;
+      text-decoration: none;
+    }
+
+    .button:hover { background: #2d3236; }
+    .primary { border-color: #44d68f; color: #10221a; background: #44d68f; }
+    .primary:hover { border-color: #70e5a8; background: #70e5a8; }
+    .button:focus-visible { outline: 2px solid #d7c9ff; outline-offset: 3px; }
+    [hidden] { display: none; }
+  </style>
+</head>
+<body>
+  <main>
+    <div class="mark" aria-hidden="true">A</div>
+    <h1>Listen in Aura</h1>
+    <p id="description">Get Aura for Windows from the latest release.</p>
+    <div class="actions">
+      <a id="open" class="button primary" hidden>Open in Aura</a>
+      <a id="download" class="button primary" href="https://github.com/NoorAshraful/AURA-Desktop-Music-application/releases/latest">Download Aura for Windows</a>
+    </div>
+  </main>
+  <script>
+    const description = document.getElementById("description");
+    const entries = Array.from(new URLSearchParams(window.location.search));
+    if (entries.length === 1 && entries[0][0] === "v" && /^[A-Za-z0-9_-]{11}$/.test(entries[0][1])) {
+      const open = document.getElementById("open");
+      open.href = `auraplayer://listen?v=${entries[0][1]}`;
+      open.hidden = false;
+      description.textContent = "Play the shared track in the Aura desktop app.";
+      document.getElementById("download").classList.remove("primary");
+    } else if (entries.length) {
+      description.textContent = "This listening link is incomplete or invalid.";
+    }
+  </script>
+</body>
+</html>
